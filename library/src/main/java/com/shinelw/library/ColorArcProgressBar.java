@@ -1,4 +1,4 @@
-package com.shinelw.colorarcprogressbar;
+package com.shinelw.library;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

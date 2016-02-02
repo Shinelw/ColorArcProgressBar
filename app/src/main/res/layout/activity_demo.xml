@@ -10,7 +10,7 @@
     android:background="#232323"
     tools:context="com.shinelw.colorarcprogressbar.DemoActivity">
 
-    <com.shinelw.colorarcprogressbar.ColorArcProgressBar
+    <com.shinelw.library.ColorArcProgressBar
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"

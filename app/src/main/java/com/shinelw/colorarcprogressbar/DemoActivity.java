@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.shinelw.library.ColorArcProgressBar;
+
 
 public class DemoActivity extends AppCompatActivity {
     private Button button;
