@@ -63,7 +63,7 @@ app:string_title="截止当前已走"
 ```
 preview like QQ health：
 
-![](https://raw.githubusercontent.com/Shinelw/ColorArcProgressBar/master/demo2.gif)
+![](https://raw.githubusercontent.com/Shinelw/ColorArcProgressBar/master/demo_qq.gif)
 
 ###5）set dial 
 ```
@@ -72,7 +72,7 @@ preview like QQ health：
 
 preview like dashboard：
 
-![](https://raw.githubusercontent.com/Shinelw/ColorArcProgressBar/master/demo3.gif)
+![](https://raw.githubusercontent.com/Shinelw/ColorArcProgressBar/master/demo_dashboard.gif)
 
 
 
