@@ -60,10 +60,15 @@ app:is_need_title="true"
 app:string_title="截止当前已走"
 ```
 类似QQ健康中当日步数圆弧显示：
-
+![](https://raw.githubusercontent.com/Shinelw/ColorArcProgressBar/master/demo2.gif)
 
 ###5）设置圆弧外刻度值
+```
+  app:is_need_dial="true"
+```
+
 模拟仪表盘：
+![](https://raw.githubusercontent.com/Shinelw/ColorArcProgressBar/master/demo3.gif)
 
 
 
