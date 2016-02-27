@@ -2,6 +2,7 @@ package com.shinelw.library;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -24,32 +25,37 @@ public class ColorArcProgressBar extends View{
     private int mHeight;
     //直径
     private int diameter = 500;
-    private RectF bgRect;
+
     //圆心
     private float centerX;
     private float centerY;
+
     private Paint allArcPaint;
     private Paint progressPaint;
     private Paint vTextPaint;
     private Paint hintPaint;
     private Paint degreePaint;
     private Paint curSpeedPaint;
+
+    private RectF bgRect;
+
+    private ValueAnimator progressAnimator;
+
     private float startAngle = 135;
     private float sweepAngle = 270;
     private float currentAngle = 0;
     private float lastAngle;
-    private int[] colors = {Color.GREEN, Color.YELLOW, Color.RED, Color.RED};
-    private ValueAnimator progressAnimator;
+    private int[] colors = new int[]{Color.GREEN, Color.YELLOW, Color.RED, Color.RED};
     private float maxValues = 60;
     private float curValues = 0;
-    private int bgArcWidth = dipToPx(2);
-    private int progressWidth = dipToPx(10);
-    private int textSize = dipToPx(80);
-    private int hintSize = dipToPx(22);
-    private int curSpeedSize = dipToPx(13);
+    private float bgArcWidth = dipToPx(2);
+    private float progressWidth = dipToPx(10);
+    private float textSize = dipToPx(60);
+    private float hintSize = dipToPx(15);
+    private float curSpeedSize = dipToPx(13);
     private int aniSpeed = 1000;
-    private int longdegree = dipToPx(13);
-    private int shortdegree = dipToPx(5);
+    private float longdegree = dipToPx(13);
+    private float shortdegree = dipToPx(5);
     private final int DEGREE_PROGRESS_DISTANCE = dipToPx(8);
     private String hintColor = "#676767";
     private String longDegreeColor = "#d2d2d2";
@@ -57,30 +63,67 @@ public class ColorArcProgressBar extends View{
     private String bgArcColor = "#111111";
     private boolean isShowCurrentSpeed = true;
     private String hintString = "Km/h";
+    private boolean isNeedTitle;
+    private boolean isNeedUnit;
+    private boolean isNeedDial;
+    private boolean isNeedContent;
+    private String titleString;
+
 
 
     // sweepAngle / maxValues 的值
     private float k;
 
     public ColorArcProgressBar(Context context) {
-        super(context);
+        super(context, null);
         initView();
     }
 
     public ColorArcProgressBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs, 0);
+        initCofig(context, attrs);
         initView();
     }
 
     public ColorArcProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initCofig(context, attrs);
         initView();
+    }
+
+    /**
+     * 初始化布局配置
+     * @param context
+     * @param attrs
+     */
+    private void initCofig(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ColorArcProgressBar);
+        int color1 = a.getColor(R.styleable.ColorArcProgressBar_front_color1, Color.GREEN);
+        int color2 = a.getColor(R.styleable.ColorArcProgressBar_front_color2, color1);
+        int color3 = a.getColor(R.styleable.ColorArcProgressBar_front_color3, color1);
+        colors = new int[]{color1, color2, color3, color3};
+
+        sweepAngle = a.getInteger(R.styleable.ColorArcProgressBar_total_engle, 270);
+        bgArcWidth = a.getDimension(R.styleable.ColorArcProgressBar_back_width, dipToPx(2));
+        progressWidth = a.getDimension(R.styleable.ColorArcProgressBar_front_width, dipToPx(10));
+        isNeedTitle = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_title, false);
+        isNeedContent = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_content, false);
+        isNeedUnit = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_unit, false);
+        isNeedDial = a.getBoolean(R.styleable.ColorArcProgressBar_is_need_dial, false);
+        hintString = a.getString(R.styleable.ColorArcProgressBar_string_unit);
+        titleString = a.getString(R.styleable.ColorArcProgressBar_string_title);
+        curValues = a.getFloat(R.styleable.ColorArcProgressBar_current_value, 0);
+        maxValues = a.getFloat(R.styleable.ColorArcProgressBar_max_value, 60);
+        setCurrentValues(curValues);
+        setMaxValues(maxValues);
+        a.recycle();
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = 2 * longdegree + progressWidth + diameter + 2 * DEGREE_PROGRESS_DISTANCE;
-        int height= 2 * longdegree + progressWidth + diameter + 2 * DEGREE_PROGRESS_DISTANCE;
+        int width = (int) (2 * longdegree + progressWidth + diameter + 2 * DEGREE_PROGRESS_DISTANCE);
+        int height= (int) (2 * longdegree + progressWidth + diameter + 2 * DEGREE_PROGRESS_DISTANCE);
         setMeasuredDimension(width, height);
     }
 
@@ -121,52 +164,54 @@ public class ColorArcProgressBar extends View{
         //当前速度显示文字
         vTextPaint = new Paint();
         vTextPaint.setTextSize(textSize);
-        vTextPaint.setColor(Color.WHITE);
+        vTextPaint.setColor(Color.BLACK);
         vTextPaint.setTextAlign(Paint.Align.CENTER);
 
-        //显示“km/h”文字
+        //显示单位文字
         hintPaint = new Paint();
         hintPaint.setTextSize(hintSize);
         hintPaint.setColor(Color.parseColor(hintColor));
         hintPaint.setTextAlign(Paint.Align.CENTER);
 
-        //显示“km/h”文字
+        //显示标题文字
         curSpeedPaint = new Paint();
         curSpeedPaint.setTextSize(curSpeedSize);
         curSpeedPaint.setColor(Color.parseColor(hintColor));
         curSpeedPaint.setTextAlign(Paint.Align.CENTER);
 
-
-
     }
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
 
         //抗锯齿
-        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
 
-        //画刻度线
-        for (int i = 0; i < 40; i++) {
-            if (i > 15 && i < 25) {
+        if (isNeedDial) {
+            //画刻度线
+            for (int i = 0; i < 40; i++) {
+                if (i > 15 && i < 25) {
+                    canvas.rotate(9, centerX, centerY);
+                    continue;
+                }
+                if (i % 5 == 0) {
+                    degreePaint.setStrokeWidth(dipToPx(2));
+                    degreePaint.setColor(Color.parseColor(longDegreeColor));
+                    canvas.drawLine(centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE, centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - longdegree, degreePaint);
+                } else {
+                    degreePaint.setStrokeWidth(dipToPx(1.4f));
+                    degreePaint.setColor(Color.parseColor(shortDegreeColor));
+                    canvas.drawLine(centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree) / 2, centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree) / 2 - shortdegree, degreePaint);
+                }
+
                 canvas.rotate(9, centerX, centerY);
-                continue;
             }
-            if (i%5 == 0) {
-                degreePaint.setStrokeWidth(dipToPx(2));
-                degreePaint.setColor(Color.parseColor(longDegreeColor));
-                canvas.drawLine(centerX, centerY - diameter/2 - progressWidth/2 - DEGREE_PROGRESS_DISTANCE, centerX, centerY - diameter/2 - progressWidth/2 - DEGREE_PROGRESS_DISTANCE - longdegree, degreePaint);
-            }else {
-                degreePaint.setStrokeWidth(dipToPx(1.4f));
-                degreePaint.setColor(Color.parseColor(shortDegreeColor));
-                canvas.drawLine(centerX, centerY - diameter/2 - progressWidth/2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree)/2, centerX, centerY - diameter/2 - progressWidth/2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree)/2 - shortdegree, degreePaint);
-            }
-
-            canvas.rotate(9, centerX, centerY);
         }
 
         //整个弧
-        canvas.drawArc(bgRect,startAngle, sweepAngle, false, allArcPaint);
+        canvas.drawArc(bgRect, startAngle, sweepAngle, false, allArcPaint);
 
         //设置渐变色
         SweepGradient sweepGradient = new SweepGradient(centerX, centerY, colors, null);
@@ -177,11 +222,17 @@ public class ColorArcProgressBar extends View{
 
         //当前进度
         canvas.drawArc(bgRect, startAngle, currentAngle, false, progressPaint);
-        if (isShowCurrentSpeed) {
-            canvas.drawText(String.format("%.1f",curValues) , centerX, centerY + textSize / 3, vTextPaint);
+
+        if (isNeedContent) {
+            canvas.drawText(String.format("%.1f", curValues), centerX, centerY + textSize / 3, vTextPaint);
         }
-        canvas.drawText(hintString,centerX, centerY + 2*textSize/3, hintPaint);
-        canvas.drawText("CURRENT SPEED",centerX, centerY - 2*textSize/3, curSpeedPaint);
+        if (isNeedUnit) {
+            canvas.drawText(hintString, centerX, centerY + 2 * textSize / 3, hintPaint);
+        }
+        if (isNeedTitle) {
+            canvas.drawText(titleString, centerX, centerY - 2 * textSize / 3, curSpeedPaint);
+        }
+
         invalidate();
 
     }
@@ -260,9 +311,6 @@ public class ColorArcProgressBar extends View{
         this.diameter = dipToPx(diameter);
     }
 
-    public void setAniSpeed() {
-
-    }
     /**
      * 为进度设置动画
      * @param last
@@ -277,6 +325,7 @@ public class ColorArcProgressBar extends View{
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 currentAngle= (float) animation.getAnimatedValue();
+                curValues = currentAngle/k;
             }
         });
         progressAnimator.start();
@@ -308,12 +357,6 @@ public class ColorArcProgressBar extends View{
         this.isShowCurrentSpeed = isShowCurrentSpeed;
     }
 
-    /**
-     * 初始加载页面时设置加载动画
-     */
-    public void setDefaultWithAnimator() {
-        setAnimation(sweepAngle, currentAngle, 2000);
-    }
 
 
 

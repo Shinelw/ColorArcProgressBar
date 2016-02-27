@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.shinelw.library.ColorArcProgressBar;
 
 
-public class DemoActivity extends AppCompatActivity {
+public class DialActivity extends AppCompatActivity {
     private Button button;
     private EditText text;
     private ColorArcProgressBar bar;
