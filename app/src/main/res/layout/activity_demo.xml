@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.shinelw.colorarcprogressbar.DemoActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button1"
+            android:text="start"
+            />
     <com.shinelw.library.ColorArcProgressBar
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:id="@+id/bar"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/bar1"
         app:is_need_content="true"
         app:front_color1="@color/colorAccent"
         app:max_value="100"
@@ -24,12 +35,65 @@
         app:is_need_unit="true"
         app:string_unit="百分比%"
         app:back_color="@android:color/darker_gray"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:text="start"
+        android:layout_marginBottom="150dp"
         />
 
-</RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2"
+            android:text="start"
+            />
+        <com.shinelw.library.ColorArcProgressBar
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/bar2"
+            app:is_need_content="true"
+            app:front_color1="#00ff00"
+            app:front_color2="#ffff00"
+            app:front_color3="#ff0000"
+            app:max_value="100"
+            app:back_width="2dp"
+            app:front_width="10dp"
+            app:total_engle="270"
+            app:is_need_unit="true"
+            app:string_unit="步"
+            app:is_need_title="true"
+            app:string_title="截止当前已走"
+            app:back_color="@android:color/darker_gray"
+            android:layout_marginBottom="150dp"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button3"
+            android:text="start"
+            />
+        <com.shinelw.library.ColorArcProgressBar
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/bar3"
+            app:is_need_content="true"
+            app:front_color1="#00ff00"
+            app:front_color2="#ffff00"
+            app:front_color3="#ff0000"
+            app:max_value="100"
+            app:back_width="2dp"
+            app:front_width="10dp"
+            app:total_engle="270"
+            app:is_need_unit="true"
+            app:string_unit="km/h"
+            app:is_need_title="true"
+            app:string_title="当前速度"
+            app:is_need_dial="true"
+            app:back_color="@android:color/darker_gray"
+            android:layout_marginBottom="150dp"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

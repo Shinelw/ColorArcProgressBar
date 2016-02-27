@@ -58,8 +58,8 @@ public class ColorArcProgressBar extends View{
     private float shortdegree = dipToPx(5);
     private final int DEGREE_PROGRESS_DISTANCE = dipToPx(8);
     private String hintColor = "#676767";
-    private String longDegreeColor = "#d2d2d2";
-    private String shortDegreeColor = "#adadad";
+    private String longDegreeColor = "#111111";
+    private String shortDegreeColor = "#111111";
     private String bgArcColor = "#111111";
     private boolean isShowCurrentSpeed = true;
     private String hintString = "Km/h";
@@ -161,7 +161,7 @@ public class ColorArcProgressBar extends View{
         progressPaint.setStrokeWidth(progressWidth);
         progressPaint.setColor(Color.GREEN);
 
-        //当前速度显示文字
+        //内容显示文字
         vTextPaint = new Paint();
         vTextPaint.setTextSize(textSize);
         vTextPaint.setColor(Color.BLACK);
@@ -224,7 +224,7 @@ public class ColorArcProgressBar extends View{
         canvas.drawArc(bgRect, startAngle, currentAngle, false, progressPaint);
 
         if (isNeedContent) {
-            canvas.drawText(String.format("%.1f", curValues), centerX, centerY + textSize / 3, vTextPaint);
+            canvas.drawText(String.format("%.0f", curValues), centerX, centerY + textSize / 3, vTextPaint);
         }
         if (isNeedUnit) {
             canvas.drawText(hintString, centerX, centerY + 2 * textSize / 3, hintPaint);
