@@ -1,5 +1,5 @@
 # ColorArcProgressBar
-[中文版]()
+[中文版](https://github.com/Shinelw/ColorArcProgressBar/blob/master/README.md)
 
 This is a customizable circular progressbar.It can achieve the effect of the QQ health's arc progress with XML. What's more, we can use it by only a few codes to do the beautiful and colorful dashboard to show current data.
 

@@ -1,6 +1,6 @@
 # ColorArcProgressBar
 
-[English Version]()
+[English Version](https://github.com/Shinelw/ColorArcProgressBar/blob/master/README_ENGLISH.md)
 
 这是一个可定制的圆形进度条，通过xml参数配置可实现QQ健康中步数的弧形进度显示、仪盘表显示速度、最常见的下载进度条等功能。
 
