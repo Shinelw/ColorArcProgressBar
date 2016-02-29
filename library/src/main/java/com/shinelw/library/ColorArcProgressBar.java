@@ -25,7 +25,6 @@ public class ColorArcProgressBar extends View{
     private int mHeight;
     //直径
     private int diameter = 500;
-
     //圆心
     private float centerX;
     private float centerY;
@@ -40,6 +39,9 @@ public class ColorArcProgressBar extends View{
     private RectF bgRect;
 
     private ValueAnimator progressAnimator;
+    private PaintFlagsDrawFilter mDrawFilter;
+    private SweepGradient sweepGradient;
+    private Matrix rotateMatrix;
 
     private float startAngle = 135;
     private float sweepAngle = 270;
@@ -68,8 +70,6 @@ public class ColorArcProgressBar extends View{
     private boolean isNeedDial;
     private boolean isNeedContent;
     private String titleString;
-
-
 
     // sweepAngle / maxValues 的值
     private float k;
@@ -179,15 +179,18 @@ public class ColorArcProgressBar extends View{
         curSpeedPaint.setColor(Color.parseColor(hintColor));
         curSpeedPaint.setTextAlign(Paint.Align.CENTER);
 
+        mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+        sweepGradient = new SweepGradient(centerX, centerY, colors, null);
+        rotateMatrix = new Matrix();
+
     }
 
 
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         //抗锯齿
-        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+        canvas.setDrawFilter(mDrawFilter);
 
         if (isNeedDial) {
             //画刻度线
@@ -214,10 +217,8 @@ public class ColorArcProgressBar extends View{
         canvas.drawArc(bgRect, startAngle, sweepAngle, false, allArcPaint);
 
         //设置渐变色
-        SweepGradient sweepGradient = new SweepGradient(centerX, centerY, colors, null);
-        Matrix matrix = new Matrix();
-        matrix.setRotate(130, centerX, centerY);
-        sweepGradient.setLocalMatrix(matrix);
+        rotateMatrix.setRotate(130, centerX, centerY);
+        sweepGradient.setLocalMatrix(rotateMatrix);
         progressPaint.setShader(sweepGradient);
 
         //当前进度
@@ -356,8 +357,5 @@ public class ColorArcProgressBar extends View{
     public void setIsShowCurrentSpeed(boolean isShowCurrentSpeed) {
         this.isShowCurrentSpeed = isShowCurrentSpeed;
     }
-
-
-
 
 }
