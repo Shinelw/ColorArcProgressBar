@@ -59,17 +59,19 @@ public class ColorArcProgressBar extends View{
     private float longdegree = dipToPx(13);
     private float shortdegree = dipToPx(5);
     private final int DEGREE_PROGRESS_DISTANCE = dipToPx(8);
+
     private String hintColor = "#676767";
     private String longDegreeColor = "#111111";
     private String shortDegreeColor = "#111111";
     private String bgArcColor = "#111111";
+    private String titleString;
+    private String hintString;
+
     private boolean isShowCurrentSpeed = true;
-    private String hintString = "Km/h";
     private boolean isNeedTitle;
     private boolean isNeedUnit;
     private boolean isNeedDial;
     private boolean isNeedContent;
-    private String titleString;
 
     // sweepAngle / maxValues 的值
     private float k;
@@ -185,8 +187,6 @@ public class ColorArcProgressBar extends View{
 
     }
 
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         //抗锯齿
@@ -202,11 +202,13 @@ public class ColorArcProgressBar extends View{
                 if (i % 5 == 0) {
                     degreePaint.setStrokeWidth(dipToPx(2));
                     degreePaint.setColor(Color.parseColor(longDegreeColor));
-                    canvas.drawLine(centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE, centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - longdegree, degreePaint);
+                    canvas.drawLine(centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE,
+                            centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - longdegree, degreePaint);
                 } else {
                     degreePaint.setStrokeWidth(dipToPx(1.4f));
                     degreePaint.setColor(Color.parseColor(shortDegreeColor));
-                    canvas.drawLine(centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree) / 2, centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree) / 2 - shortdegree, degreePaint);
+                    canvas.drawLine(centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree) / 2,
+                            centerX, centerY - diameter / 2 - progressWidth / 2 - DEGREE_PROGRESS_DISTANCE - (longdegree - shortdegree) / 2 - shortdegree, degreePaint);
                 }
 
                 canvas.rotate(9, centerX, centerY);
@@ -313,6 +315,38 @@ public class ColorArcProgressBar extends View{
     }
 
     /**
+     * 设置标题
+     * @param title
+     */
+    private void setTitle(String title){
+        this.titleString = title;
+    }
+
+    /**
+     * 设置是否显示标题
+     * @param isNeedTitle
+     */
+    private void setIsNeedTitle(boolean isNeedTitle) {
+        this.isNeedTitle = isNeedTitle;
+    }
+
+    /**
+     * 设置是否显示单位文字
+     * @param isNeedUnit
+     */
+    private void setIsNeedUnit(boolean isNeedUnit) {
+        this.isNeedUnit = isNeedUnit;
+    }
+
+    /**
+     * 设置是否显示外部刻度盘
+     * @param isNeedDial
+     */
+    private void setIsNeedDial(boolean isNeedDial) {
+        this.isNeedDial = isNeedDial;
+    }
+
+    /**
      * 为进度设置动画
      * @param last
      * @param current
@@ -331,7 +365,6 @@ public class ColorArcProgressBar extends View{
         });
         progressAnimator.start();
     }
-
 
     /**
      * dip 转换成px
@@ -353,9 +386,4 @@ public class ColorArcProgressBar extends View{
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.widthPixels;
     }
-
-    public void setIsShowCurrentSpeed(boolean isShowCurrentSpeed) {
-        this.isShowCurrentSpeed = isShowCurrentSpeed;
-    }
-
 }
