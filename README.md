@@ -11,7 +11,7 @@ This is a customizable circular progressbar.It can achieve the effect of the QQ 
 ```
 dependencies {
     ...
-    compile 'com.github.shinelw:library:1.0.1'
+    compile 'com.github.shinelw.colorarcprogressbar:library:1.0.3'
 }
 ```
 ##2、XML
