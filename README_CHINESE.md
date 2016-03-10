@@ -12,7 +12,7 @@
 ```
 dependencies {
     ...
-    compile 'com.github.shinelw:library:1.0.1'
+    compile 'com.github.shinelw.colorarcprogressbar:library:1.0.3'
 }
 ```
 ##2、XML
